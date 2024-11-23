@@ -7,4 +7,4 @@ Amacım, e-ticaret sektöründe müşteri davranışlarını ve memnuniyetini an
 Duygu analizi yapmayı tercih edersem; Duygu analizi için çıkarılması gereken sütunlar Clothing ID, Unnamed: 0 ve Positive Feedback Count'tur, çünkü metin içeriğiyle ilişkili değillerdir.
 
 Ayrıntılar ;
-Kaggle :[ [https://www.kaggle.com/code/simgelale/womens-clothing-e-commerce-reviews/edit](https://www.kaggle.com/code/simgelale/womens-clothing-e-commerce-reviews)](https://www.kaggle.com/code/simgelale/womens-clothing-e-commerce-reviews?scriptVersionId=209246433)
+Kaggle :[ https://www.kaggle.com/code/yamursak/womens-clothing-e-commerce-reviews [https://www.kaggle.com/code/simgelale/womens-clothing-e-commerce-reviews/edit](https://www.kaggle.com/code/simgelale/womens-clothing-e-commerce-reviews)](https://www.kaggle.com/code/simgelale/womens-clothing-e-commerce-reviews?scriptVersionId=209246433)
