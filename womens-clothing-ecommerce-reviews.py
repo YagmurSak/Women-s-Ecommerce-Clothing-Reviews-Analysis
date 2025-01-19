@@ -26,6 +26,7 @@ df.head()
 
 df.isnull().sum()
 ##################################################################################
+
 def add_random_missing_values(dataframe: pd.DataFrame,
                               missing_rate: float = 0.05) -> pd.DataFrame:
     """Turns random values to NaN in a DataFrame.
@@ -66,6 +67,7 @@ df = df_missing
 df.head()
 df.info()
 ##################################################################################
+
 def unique_values(dataframe):
 
     for col in df.columns:
@@ -102,43 +104,6 @@ def check_df(dataframe, head=5):
 check_df(df)
 
 def grab_col_names(dataframe, cat_th=10, car_th=20):
-    """
-
-    Veri setindeki kategorik, numerik ve kategorik fakat kardinal değişkenlerin isimlerini verir.
-    Not: Kategorik değişkenlerin içerisine numerik görünümlü kategorik değişkenler de dahildir.
-
-    Parameters
-    ------
-        dataframe: dataframe
-                Değişken isimleri alınmak istenilen dataframe
-        cat_th: int, optional
-                numerik fakat kategorik olan değişkenler için sınıf eşik değeri
-        car_th: int, optinal
-                kategorik fakat kardinal değişkenler için sınıf eşik değeri
-
-    Returns
-    ------
-        cat_cols: list
-                Kategorik değişken listesi
-        num_cols: list
-                Numerik değişken listesi
-        cat_but_car: list
-                Kategorik görünümlü kardinal değişken listesi
-
-    Examples
-    ------
-        import seaborn as sns
-        df = sns.load_dataset("iris")
-        print(grab_col_names(df))
-
-
-    Notes
-    ------
-        cat_cols + num_cols + cat_but_car = toplam değişken sayısı
-        num_but_cat cat_cols'un içerisinde.
-        Return olan 3 liste toplamı toplam değişken sayısına eşittir: cat_cols + num_cols + cat_but_car = değişken sayısı
-
-    """
 
     # cat_cols, cat_but_car
     cat_cols = [col for col in dataframe.columns if dataframe[col].dtypes == "O"]
@@ -234,10 +199,9 @@ plt.show(block=True)
 
 ##################################################################################
 
-# Sadece sayısal sütunları seçme
+
 numeric_df = df[num_cols]
 
-# Korelasyon matrisi oluşturma ve görselleştirme
 plt.figure(figsize=(10, 8))
 sns.heatmap(numeric_df.corr(), annot=True, fmt=".2f", cmap="magma")
 plt.title("Sayısal Sütunlar Arasındaki Korelasyon Matrisi")
