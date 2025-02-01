@@ -368,8 +368,6 @@ from sklearn.impute import KNNImputer
 from sklearn.preprocessing import RobustScaler
 
 
-
-
 scaler = RobustScaler()
 rating_scaled = pd.DataFrame(scaler.fit_transform(df[['Rating']]), columns=['Rating'])
 imputer = KNNImputer(n_neighbors=5)
