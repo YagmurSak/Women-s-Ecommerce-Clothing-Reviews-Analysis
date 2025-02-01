@@ -6,25 +6,19 @@ import warnings
 from sklearn.exceptions import ConvergenceWarning
 import random
 
-
-# Uyarıları kapatma
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter("ignore", category=ConvergenceWarning)
-
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 pd.set_option('display.width', 500)
 
-
 df_ = pd.read_csv(r"C:\Users\ASUS\PycharmProjects\pythonProject\Aygaz_Bootcamp\Womens Clothing E-Commerce Reviews.csv")
-
 df = df_
-
 df.head()
-
 df.isnull().sum()
+
 ##################################################################################
 
 def add_random_missing_values(dataframe: pd.DataFrame,
@@ -130,7 +124,8 @@ cat_cols, num_cols, cat_but_car = grab_col_names(df)
 
 ##################################################################################
 
-# KATEGORİK DEĞİŞKENLERİN ANALİZİ
+#  ANALYSIS OF CATEGORICAL VARIABLES
+
 def cat_summary(dataframe, col_names, plot=False):
 
     if not isinstance(col_names, list):
@@ -151,7 +146,8 @@ cat_summary(df, cat_cols, plot=False)
 
 ##################################################################################
 
-# NUMERİK DEĞİŞKENLERİN ANALİZİ
+# ANALYSIS OF NUMERICAL VARIABLES
+
 def num_summary(dataframe, numerical_col, plot=False):
     # Sayısal değişkenlerin özet istatistiklerini yazdır
     quantiles = [0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.95, 0.99]
@@ -183,15 +179,14 @@ for col in num_cols:
 
 ##################################################################################
 
-#  Eksik Değer Analizi
+#  ANALYSIS OF MISSING VALUES
+
 print("\nEksik Değer Analizi:")
 missing_values = df.isnull().sum().sort_values(ascending=False)
 missing_percentage = (missing_values / df.shape[0]) * 100
 missing_df = pd.DataFrame({'Eksik Değer Sayısı': missing_values, 'Eksik Değer Oranı (%)': missing_percentage})
 print(missing_df[missing_df['Eksik Değer Sayısı'] > 0])  # Eksik değer oranları
 
-
-# Eksik değerleri görselleştir
 plt.figure(figsize=(12, 6))
 sns.heatmap(df.isnull(), cbar=False, cmap='viridis')
 plt.title("Eksik Değerlerin Görselleştirilmesi")
@@ -199,6 +194,7 @@ plt.show(block=True)
 
 ##################################################################################
 
+# CORRELATION MATRIX
 
 numeric_df = df[num_cols]
 
@@ -210,28 +206,20 @@ plt.show(block=True)
 corr = df[num_cols].corr()
 
 ##################################################################################
-#  Sayısal Değişkenler Arası İlişkiler
-# Çift değişkenli dağılım için scatter plot matrisi
+
+# RELATION OF NUMERICAL VARIABLES
 sns.pairplot(df.select_dtypes(include=[np.number]), diag_kind='kde', plot_kws={'alpha':0.7})
 plt.suptitle("Sayısal Değişkenler Arası İlişkiler", y=1.02)
 plt.show(block=True)
 
-##################################################################################
-
-
-# Kategorik ve Sayısal Değişkenler Arasındaki Kırılımlar
-# pivot table ile kategorik değişkenlerin sayısal değerlere göre özet istatistikleri
 for col in df.select_dtypes(include=['object']).columns:
     pivot = pd.pivot_table(df, index=col, values=df.select_dtypes(include=[np.number]).columns, aggfunc=['mean', 'median', 'std'])
     print(f"\n{col} Değişkenine Göre Sayısal Değişkenlerin Kırılımı:")
     print(pivot.head(10))
 
-
 ##################################################################################
 
-
-# Özelliklerin Normalite Kontrolü
-# Sayısal sütunların normal dağılıma uyup uymadığını incele
+# Examining whether the numerical columns conform to a normal distribution
 from scipy.stats import shapiro
 
 for col in df.select_dtypes(include=[np.number]).columns:
@@ -243,9 +231,8 @@ for col in df.select_dtypes(include=[np.number]).columns:
         print(f"{col} normal dağılıma uygun değil.")
 
 
-
 ##################################################################################
-#Aykırı Değerler
+# OUTLIERS
 
 def outlier_thresholds(dataframe, variable, low_quantile=0.05, up_quantile=0.95):
     quantile_one = dataframe[variable].quantile(low_quantile)
@@ -254,8 +241,7 @@ def outlier_thresholds(dataframe, variable, low_quantile=0.05, up_quantile=0.95)
     up_limit = quantile_three + 1.5 * interquantile_range
     low_limit = quantile_one - 1.5 * interquantile_range
     return low_limit, up_limit
-##################################################################################
-# Aykırı değer Kontrolü
+
 def check_outlier(dataframe, col_name):
     low_limit, up_limit = outlier_thresholds(dataframe, col_name)
     if dataframe[(dataframe[col_name] > up_limit) | (dataframe[col_name] < low_limit)].any(axis=None):
@@ -267,8 +253,6 @@ for col in num_cols:
     if col != "price":
       print(col, check_outlier(df, col))
 
-##################################################################################
-# Aykırı Değerlerin Kendilerine Erişmek
 def grab_outliers(dataframe, col_name, index=False):
     low, up = outlier_thresholds(dataframe, col_name)
 
@@ -284,8 +268,6 @@ def grab_outliers(dataframe, col_name, index=False):
 for col in num_cols:
     print(col, grab_outliers(df, col))
 
-##################################################################################
-# Aykırı Değerlerin Baskılanması
 def replace_with_thresholds(dataframe, variable):
     low_limit, up_limit = outlier_thresholds(dataframe, variable)
     dataframe.loc[(dataframe[variable] < low_limit), variable] = low_limit
@@ -303,23 +285,20 @@ for col in num_cols:
 
 ##################################################################################
 
+# ANALYSIS OF NUMERICAL VARIABLES
 
-# NUMERİK DEĞİŞKENLERİN ANALİZİ
 def num_summary(dataframe, numerical_col, plot=False):
-    # Sayısal değişkenlerin özet istatistiklerini yazdır
     quantiles = [0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.95, 0.99]
     print(dataframe[numerical_col].describe(quantiles).T)
 
     if plot:
-        # Histogram çiz
         plt.figure(figsize=(12, 6))
 
-        plt.subplot(1, 2, 1)  # Birinci grafiği çiz
+        plt.subplot(1, 2, 1)  
         dataframe[numerical_col].hist(bins=20)
         plt.xlabel(numerical_col)
         plt.title(f"{numerical_col} Histogram")
 
-        # Box plot çiz
         plt.subplot(1, 2, 2)  # İkinci grafiği çiz
         dataframe.boxplot(column=numerical_col)
         plt.title(f"{numerical_col} Box Plot")
@@ -329,59 +308,33 @@ def num_summary(dataframe, numerical_col, plot=False):
 for col in num_cols:
     num_summary(df, col, plot=False)
 
-##################################################################################
-#  Eksik Değer Analizi
-print("\nEksik Değer Analizi:")
-missing_values = df.isnull().sum().sort_values(ascending=False)
-missing_percentage = (missing_values / df.shape[0]) * 100
-missing_df = pd.DataFrame({'Eksik Değer Sayısı': missing_values, 'Eksik Değer Oranı (%)': missing_percentage})
-print(missing_df[missing_df['Eksik Değer Sayısı'] > 0])  # Eksik değer oranları
 
-
-# Eksik değerleri görselleştir
-plt.figure(figsize=(12, 6))
-sns.heatmap(df.isnull(), cbar=False, cmap='viridis')
-plt.title("Eksik Değerlerin Görselleştirilmesi")
-plt.show(block=True)
-
-##################################################################################
 df.head()
 df["Clothing ID"].unique()
 cat_cols, num_cols, cat_but_car = grab_col_names(df)
 df.isnull().sum()
 
-# Clothing ID sütunundaki eksik değerleri 0 ile doldurma
 df['Clothing ID'] = df['Clothing ID'].fillna(0)
-
-#"Unknown" gibi bir placeholder kullandık
 df['Title'].fillna("Unknown", inplace=True)
-
-#"No Review" gibi bir placeholder kullandık
 df['Review Text'].fillna("No Review", inplace=True)
-
-#Eksik değerler sıfır (0) ile dolduruldu.
 df['Unnamed: 0'].fillna(0, inplace=True)
-
-#Gruplandırılmış(Department Name Kırılımında) mod kullanıldı
 df['Class Name'] = df['Class Name'].fillna(
-    df.groupby('Department Name')['Class Name'].transform(lambda x: x.mode()[0] if not x.mode().empty else "Unknown")
-)
-# Eğer hala eksik değer varsa Division Name bazında doldurma
+    df.groupby('Department Name')['Class Name'].transform(lambda x: x.mode()[0] if not x.mode().empty else "Unknown"))
+
 if df['Class Name'].isnull().sum() != 0:
     df['Class Name'] = df['Class Name'].fillna(
-        df.groupby('Division Name')['Class Name'].transform(lambda x: x.mode()[0] if not x.mode().empty else "Unknown")
-    )
+        df.groupby('Division Name')['Class Name'].transform(lambda x: x.mode()[0] if not x.mode().empty else "Unknown"))
 
 df['Department Name'] = df['Department Name'].fillna(
-    df.groupby('Class Name')['Department Name'].transform(lambda x: x.mode()[0] if not x.mode().empty else "Unknown")
-)
-# Eğer hala eksik değer varsa Division Name bazında doldurma
+    df.groupby('Class Name')['Department Name'].transform(lambda x: x.mode()[0] if not x.mode().empty else "Unknown"))
+
+
 if df['Department Name'].isnull().sum() != 0:
     df['Department Name'] = df['Department Name'].fillna(
         df.groupby('Division Name')['Department Name'].transform(lambda x: x.mode()[0] if not x.mode().empty else "Unknown")
     )
 
-# Division Name eksik değerlerini Department Name ve Class Name'e göre gruplandırılmış mod ile doldurma
+
 df['Division Name'] = df['Division Name'].fillna(
     df.groupby(['Department Name', 'Class Name'])['Division Name'].transform(
         lambda x: x.mode()[0] if not x.mode().empty else "Unknown"
@@ -395,18 +348,17 @@ if df['Division Name'].isnull().sum() != 0:
             lambda x: x.mode()[0] if not x.mode().empty else "Unknown"
         )
     )
-# Positive Feedback Count eksik değerlerini Department Name ve Class Name'e göre gruplandırılmış ortalama değerlerle doldurma
+
 df['Positive Feedback Count'] = df['Positive Feedback Count'].fillna(
     df.groupby(['Department Name', 'Class Name'])['Positive Feedback Count'].transform('mean')
 )
 
-# Eğer hala eksik değer varsa Class Name bazında doldur
+
 if df['Positive Feedback Count'].isnull().sum() != 0:
     df['Positive Feedback Count'] = df['Positive Feedback Count'].fillna(
         df.groupby(['Division Name'])['Positive Feedback Count'].transform('mean')
     )
 
-# Age sütunundaki eksik değerleri Class Name'e göre gruplandırılmış medyan ile doldurma
 df['Age'] = df['Age'].fillna(
     df.groupby('Class Name')['Age'].transform('median')
 )
@@ -415,41 +367,31 @@ df['Age'] = df['Age'].fillna(
 from sklearn.impute import KNNImputer
 from sklearn.preprocessing import RobustScaler
 
-# Rating sütunu için KNN ile eksik değer doldurma
 
-# Rating sütununun ölçeklendirilmesi
+
+
 scaler = RobustScaler()
 rating_scaled = pd.DataFrame(scaler.fit_transform(df[['Rating']]), columns=['Rating'])
-
-# KNN ile eksik değer doldurma
 imputer = KNNImputer(n_neighbors=5)
 rating_imputed = pd.DataFrame(imputer.fit_transform(rating_scaled), columns=['Rating'])
-
-# Orijinal ölçeğe geri döndürme
 rating_final = pd.DataFrame(scaler.inverse_transform(rating_imputed), columns=['Rating'])
 
-# Orijinal veri setinde Rating sütununu güncelleme
 df['Rating'] = rating_final['Rating']
 
-# Eksik değerlerin kontrolü
 rating_missing_after_knn = df['Rating'].isnull().sum()
 
 rating_missing_after_knn
 
 
-# Class Name ve Rating kırılımında mod ile doldurma
 df['Recommended IND'] = df['Recommended IND'].fillna(
     df.groupby(['Class Name', 'Rating'])['Recommended IND'].transform(
-        lambda x: x.mode()[0] if not x.mode().empty else 0
-    )
-)
+        lambda x: x.mode()[0] if not x.mode().empty else 0))
 
-# Hala eksik varsa genel mod ile doldur
+
 if df['Recommended IND'].isnull().sum() > 0:
     df['Recommended IND'].fillna(df['Recommended IND'].mode()[0], inplace=True)
 
 
-# Eğer hala eksik değer varsa bu satırları sil
 if df.isnull().sum().sum() > 0:
     df = df.dropna()
 
