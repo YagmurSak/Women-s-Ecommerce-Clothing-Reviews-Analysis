@@ -1,10 +1,31 @@
-# womens-clothing-ecommerce-reviews-AygazBootcamp
+# Women's E-Commerce Clothing Reviews Analysis
 
-Bu proje, Kaggle platformundan alınan kadın giyim e-ticaret müşteri yorumları ve ürün verileri üzerinde veri analizi, işleme ve eksik değer yönetimi işlemlerini kapsamaktadır. Veri seti, metinsel geri bildirimler, puanlamalar ve ürünle ilgili meta bilgileri içerir.
+This project covers data analysis, processing and missing value management operations on women's clothing e-commerce customer reviews and product data obtained from the Kaggle platform. The dataset includes textual feedback, ratings and product-related meta information.
 
-Amacım, e-ticaret sektöründe müşteri davranışlarını ve memnuniyetini anlamaya yönelik analizler yapmaktır. Duygu analizi, öneri sistemleri ve veri keşfi gibi uygulamalar için uygundur. Doğal dil işleme (NLP) ve makine öğrenimi yöntemleriyle müşteri memnuniyeti tahmini gibi projeler geliştirilebilir.
+My goal is to conduct analyses to understand customer behaviour and satisfaction in the e-commerce sector. Sentiment analysis is suitable for applications such as recommendation systems and data discovery. Projects such as customer satisfaction prediction can be developed with natural language processing (NLP) and machine learning methods.
 
-Duygu analizi yapmayı tercih edersem; Duygu analizi için çıkarılması gereken sütunlar Clothing ID, Unnamed: 0 ve Positive Feedback Count'tur, çünkü metin içeriğiyle ilişkili değillerdir.
+# About Dataset
 
-Ayrıntılar ;
-Kaggle :[ https://www.kaggle.com/code/yamursak/womens-clothing-e-commerce-reviews [https://www.kaggle.com/code/simgelale/womens-clothing-e-commerce-reviews/edit](https://www.kaggle.com/code/simgelale/womens-clothing-e-commerce-reviews)](https://www.kaggle.com/code/simgelale/womens-clothing-e-commerce-reviews?scriptVersionId=209246433)
+This is a Women’s Clothing E-Commerce dataset revolving around the reviews written by customers. Its nine supportive features offer a great environment to parse out the text through its multiple dimensions. Because this is real commercial data, it has been anonymized, and references to the company in the review text and body have been replaced with “retailer”.
+
+This dataset includes 23486 rows and 10 feature variables. Each row corresponds to a customer review, and includes the variables:
+
+**Clothing ID:** Integer Categorical variable that refers to the specific piece being reviewed.
+
+**Age:** Positive Integer variable of the reviewers age.
+
+**Title:** String variable for the title of the review.
+
+**Review Text:** String variable for the review body.
+
+**Rating:** Positive Ordinal Integer variable for the product score granted by the customer from 1 Worst, to 5 Best.
+
+**Recommended IND:** Binary variable stating where the customer recommends the product where 1 is recommended, 0 is not recommended.
+
+**Positive Feedback Count:** Positive Integer documenting the number of other customers who found this review positive.
+
+Division Name: Categorical name of the product high level division.
+
+Department Name: Categorical name of the product department name.
+
+Class Name: Categorical name of the product class name.
